@@ -22,7 +22,11 @@ body {
   display: flex; 
   flex-direction: column; 
   margin: 0; 
-  padding: 0; 
+  padding: 0;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+  box-shadow: 0 0 20px rgba(0,0,0,0.1);
 } 
  
 .header { 
@@ -62,6 +66,8 @@ body {
   font-size: 1.8rem; 
   font-weight: 600; 
   margin: 0; 
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
 } 
  
 .nav { 
@@ -93,9 +99,16 @@ body {
   flex: 1; 
   width: 100%; 
   margin: 0; 
-  padding: 0;
+  padding: 2rem;
+  background-color: #fdfeff;
 } 
  
+.content-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
 .footer { 
   background-color: #028dbf; 
   color: white; 
@@ -110,31 +123,141 @@ body {
   text-align: center; 
 } 
  
+@media (max-width: 1024px) {
+  .layout {
+    box-shadow: none;
+  }
+  
+  .header-container {
+    padding: 0 1.5rem;
+  }
+  
+  .main-content {
+    padding: 1.5rem;
+  }
+  
+  .site-title {
+    font-size: 1.5rem;
+  }
+  
+  .nav {
+    gap: 0.75rem;
+  }
+  
+  .nav-link {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+  }
+}
+
 @media (max-width: 768px) { 
+  .header {
+    background-size: 100% 200px;
+    padding: 0.75rem 0;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
   .header-container { 
     padding: 0 1rem; 
   } 
  
   .logo-section { 
-    flex-direction: column; 
-    align-items: center; 
+    flex-direction: row; 
+    align-items: center;
+    margin-bottom: 0.5rem;
   } 
  
+  .herb {
+    width: 45px;
+    height: 45px;
+    flex-shrink: 0;
+  }
+ 
   .site-title { 
-    font-size: 1.4rem; 
+    font-size: 1.2rem;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
   } 
  
   .nav { 
-    flex-direction: column; 
-    gap: 0.5rem; 
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.5rem;
   } 
+ 
+  .nav-link {
+    padding: 0.35rem 0.7rem;
+    font-size: 0.8rem;
+    background-color: rgba(2, 141, 191, 0.7);
+    border-radius: 3px;
+  }
+
+  .nav-link:hover {
+    background-color: rgba(2, 141, 191, 0.9);
+  }
  
   .main-content { 
     padding: 1rem; 
-    text-align: left; 
   }
-  
+
+  .content-wrapper {
+    padding: 0;
+  }
+
+  .footer-container {
+    padding: 0 1rem;
+  }
+
+  .footer {
+    padding: 1rem 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    background-size: 100% 150px;
+    min-height: 150px;
+    padding: 0.5rem 0;
+  }
+
+  .header-container {
+    padding: 0 0.75rem;
+  }
+
+  .logo-section {
+    gap: 0.4rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .herb {
+    width: 35px;
+    height: 35px;
+  }
+
+  .site-title {
+    font-size: 0.95rem;
+  }
+
+  .nav {
+    gap: 0.25rem;
+    margin-top: 0.3rem;
+  }
+
+  .nav-link {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.7rem;
+  }
+
   .main-content {
-    background-attachment: scroll;
+    padding: 0.75rem;
+  }
+
+  .footer-container {
+    padding: 0 0.75rem;
+    font-size: 0.85rem;
   }
 }

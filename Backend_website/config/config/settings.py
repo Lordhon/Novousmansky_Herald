@@ -13,7 +13,7 @@ PASSWORD_DB = os.getenv("PASSWORD_DB")
 SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'backend', 'zakaz_backend', '0.0.0.0']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'backend', 'zakaz_backend', '0.0.0.0' , '192.168.61.210']
 
 LOGGING = {
     "version": 1,
