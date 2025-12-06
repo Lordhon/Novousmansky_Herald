@@ -2,7 +2,8 @@ import os
 import sys
 from datetime import timedelta
 from pathlib import Path
-
+import warnings
+from django.utils.deprecation import RemovedInDjango60Warning
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -60,13 +61,18 @@ INSTALLED_APPS = [
     'text',
 
 ]
+
+warnings.filterwarnings(
+    "ignore",
+    message="django-ckeditor bundles CKEditor 4",
+)
 CKEDITOR_UPLOAD_PATH = "uploads/"
 CKEDITOR_ALLOW_NONIMAGE_FILES = False
 CKEDITOR_CONFIGS = {
     'default': {
         'toolbar': 'full',
         'height': 300,
-        'width': 'auto',
+        'width': '100%',
         'removeButtons' : 'Save,Scayt,Source,NewPage,Preview,Print,Templates,PasteFromWord,PasteText,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Flash,Iframe,Maximize,ShowBlocks,About'
     },
 }

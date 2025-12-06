@@ -22,7 +22,9 @@ function Layout({ children }) {
         </div>
       </header>
       <main className="main-content">
-        {children}
+        <div className="content-wrapper">
+          {children}
+        </div>
       </main>
       <footer className="footer">
         <div className="footer-container">
@@ -34,4 +36,3 @@ function Layout({ children }) {
 }
 
 export default Layout
-
