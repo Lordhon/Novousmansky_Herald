@@ -15,4 +15,4 @@ RUN mkdir -p /app/media/documents
 COPY . .
 EXPOSE 8000
 
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+ENTRYPOINT ["./entrypoint.sh"]
