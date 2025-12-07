@@ -179,3 +179,4 @@ CORS_ALLOWED_ORIGINS = [
     "https://nv36.ru",
 
 ]
+CSRF_TRUSTED_ORIGINS = ['https://nv36.ru']
