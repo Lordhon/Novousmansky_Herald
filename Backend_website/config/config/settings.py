@@ -13,7 +13,7 @@ PASSWORD_DB = os.getenv("PASSWORD_DB")
 SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'backend', 'zakaz_backend', '0.0.0.0' , '192.168.61.210']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'backend', 'zakaz_backend', '0.0.0.0' , '192.168.61.210' , 'nv36.ru']
 
 LOGGING = {
     "version": 1,
@@ -176,4 +176,6 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:5173",
     "http://frontend:80",
     "http://zakaz_frontend:80",
+    "https://nv36.ru/",
+
 ]
