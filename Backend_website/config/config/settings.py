@@ -176,6 +176,6 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:5173",
     "http://frontend:80",
     "http://zakaz_frontend:80",
-    "https://nv36.ru/",
+    "https://nv36.ru",
 
 ]
