@@ -5,10 +5,19 @@ function MainPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [hoveredCard, setHoveredCard] = useState(null)
-  const [downloadCounts, setDownloadCounts] = useState({})
+  const [searchTitle, setSearchTitle] = useState('')
+  const [showAdvanced, setShowAdvanced] = useState(false)
+  const [categories, setCategories] = useState([])
+  const [advancedFilters, setAdvancedFilters] = useState({
+    title: '',
+    category: '',
+    dateFrom: '',
+    dateTo: ''
+  })
 
   useEffect(() => {
     fetchFiles()
+    fetchCategories()
   }, [])
 
   const fetchFiles = async () => {
@@ -28,6 +37,26 @@ function MainPage() {
       console.error('Ошибка:', err)
     } finally {
       setLoading(false)
+    }
+  }
+
+  const fetchCategories = async () => {
+    try {
+      const response = await fetch('/api/list-categories/')
+      if (response.ok) {
+        const data = await response.json()
+        let catArray = []
+        
+        if (Array.isArray(data)) {
+          catArray = data.map(cat => typeof cat === 'string' ? cat : cat.name || cat)
+        } else if (typeof data === 'object') {
+          catArray = Object.values(data).map(cat => typeof cat === 'string' ? cat : cat.name || cat)
+        }
+        
+        setCategories(catArray)
+      }
+    } catch (err) {
+      console.error('Ошибка при загрузке категорий:', err)
     }
   }
 
@@ -66,21 +95,150 @@ function MainPage() {
       link.click()
       document.body.removeChild(link)
       window.URL.revokeObjectURL(downloadUrl)
-      
-      setDownloadCounts(prev => ({
-        ...prev,
-        [fileId]: (prev[fileId] || 0) + 1
-      }))
     } catch (error) {
       console.error('Ошибка при скачивании файла:', error)
       alert('Не удалось скачать файл')
     }
   }
 
+  const filterFiles = () => {
+    return files.filter(file => {
+      const titleMatch = file.title.toLowerCase().includes(searchTitle.toLowerCase())
+      
+      if (!showAdvanced) {
+        return titleMatch
+      }
+
+      const advTitleMatch = file.title.toLowerCase().includes(advancedFilters.title.toLowerCase())
+      const categoryMatch = !advancedFilters.category || file.category === advancedFilters.category
+      
+      let dateMatch = true
+      if (advancedFilters.dateFrom || advancedFilters.dateTo) {
+        const fileDate = new Date(file.uploaded_at)
+        if (advancedFilters.dateFrom) {
+          const dateFrom = new Date(advancedFilters.dateFrom)
+          dateMatch = dateMatch && fileDate >= dateFrom
+        }
+        if (advancedFilters.dateTo) {
+          const dateTo = new Date(advancedFilters.dateTo)
+          dateMatch = dateMatch && fileDate <= dateTo
+        }
+      }
+
+      return advTitleMatch && categoryMatch && dateMatch
+    })
+  }
+
+  const handleAdvancedChange = (field, value) => {
+    setAdvancedFilters(prev => ({
+      ...prev,
+      [field]: value
+    }))
+  }
+
+  const resetFilters = () => {
+    setSearchTitle('')
+    setAdvancedFilters({
+      title: '',
+      category: '',
+      dateFrom: '',
+      dateTo: ''
+    })
+  }
+
+  const filteredFiles = filterFiles()
+
   const styles = {
     mainPage: { width: '100%' },
     header: { marginBottom: '2rem' },
     title: { color: '#028dbf', margin: 0, fontSize: '2.4rem', fontWeight: 600 },
+    searchContainer: {
+      display: 'flex',
+      gap: '0.75rem',
+      marginBottom: '1.5rem',
+      alignItems: 'center'
+    },
+    searchInput: {
+      flex: 1,
+      padding: '0.75rem 1rem',
+      fontSize: '1rem',
+      border: '1px solid #ddd',
+      borderRadius: '4px',
+      fontFamily: 'inherit'
+    },
+    searchBtn: {
+      padding: '0.75rem 1.5rem',
+      backgroundColor: '#028dbf',
+      color: 'white',
+      border: 'none',
+      borderRadius: '4px',
+      cursor: 'pointer',
+      fontSize: '0.95rem',
+      fontWeight: 500
+    },
+    advancedBtn: {
+      padding: '0.75rem 1.5rem',
+      backgroundColor: '#6c757d',
+      color: 'white',
+      border: 'none',
+      borderRadius: '4px',
+      cursor: 'pointer',
+      fontSize: '0.95rem',
+      fontWeight: 500
+    },
+    advancedPanel: {
+      background: '#f8f9fa',
+      padding: '1.5rem',
+      borderRadius: '8px',
+      marginBottom: '1.5rem',
+      border: '1px solid #ddd'
+    },
+    filterRow: {
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+      gap: '1rem',
+      marginBottom: '1rem'
+    },
+    filterGroup: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '0.5rem'
+    },
+    filterLabel: {
+      fontSize: '0.9rem',
+      fontWeight: 500,
+      color: '#333'
+    },
+    filterInput: {
+      padding: '0.5rem',
+      fontSize: '0.9rem',
+      border: '1px solid #ddd',
+      borderRadius: '4px',
+      fontFamily: 'inherit'
+    },
+    filterButtonGroup: {
+      display: 'flex',
+      gap: '0.5rem',
+      marginTop: '0.5rem'
+    },
+    resetBtn: {
+      padding: '0.5rem 1rem',
+      backgroundColor: '#dc3545',
+      color: 'white',
+      border: 'none',
+      borderRadius: '4px',
+      cursor: 'pointer',
+      fontSize: '0.85rem'
+    },
+    applyBtn: {
+      padding: '0.5rem 1rem',
+      backgroundColor: '#28a745',
+      color: 'white',
+      border: 'none',
+      borderRadius: '4px',
+      cursor: 'pointer',
+      fontSize: '0.85rem'
+    },
     loading: { textAlign: 'center', padding: '2rem', color: '#666' },
     error: { textAlign: 'center', padding: '2rem', color: '#dc3545' },
     errorBtn: {
@@ -154,11 +312,88 @@ function MainPage() {
         <h1 style={styles.title}>Список файлов</h1>
       </div>
 
-      {files.length === 0 ? (
-        <div style={styles.noFiles}>Файлы не найдены</div>
+      {!showAdvanced && (
+        <div style={styles.searchContainer}>
+          <input
+            type="text"
+            placeholder="Поиск по заголовку..."
+            value={searchTitle}
+            onChange={(e) => setSearchTitle(e.target.value)}
+            style={styles.searchInput}
+          />
+          <button style={styles.advancedBtn} onClick={() => setShowAdvanced(!showAdvanced)}>
+            {showAdvanced ? '✕ Свернуть поиск' : '⚙ Расширенный поиск'}
+          </button>
+        </div>
+      )}
+
+      {showAdvanced && (
+        <div style={styles.advancedPanel}>
+          <div style={styles.filterRow}>
+            <div style={styles.filterGroup}>
+              <label style={styles.filterLabel}>Заголовок</label>
+              <input
+                type="text"
+                placeholder="Введите заголовок..."
+                value={advancedFilters.title}
+                onChange={(e) => handleAdvancedChange('title', e.target.value)}
+                style={styles.filterInput}
+              />
+            </div>
+
+            <div style={styles.filterGroup}>
+              <label style={styles.filterLabel}>Категория</label>
+              <select
+                value={advancedFilters.category}
+                onChange={(e) => handleAdvancedChange('category', e.target.value)}
+                style={styles.filterInput}
+              >
+                <option value="">Все категории</option>
+                {categories.map((cat, idx) => (
+                  <option key={idx} value={String(cat)}>{String(cat)}</option>
+                ))}
+              </select>
+            </div>
+
+            <div style={styles.filterGroup}>
+              <label style={styles.filterLabel}>От даты</label>
+              <input
+                type="date"
+                value={advancedFilters.dateFrom}
+                onChange={(e) => handleAdvancedChange('dateFrom', e.target.value)}
+                style={styles.filterInput}
+              />
+            </div>
+
+            <div style={styles.filterGroup}>
+              <label style={styles.filterLabel}>До даты</label>
+              <input
+                type="date"
+                value={advancedFilters.dateTo}
+                onChange={(e) => handleAdvancedChange('dateTo', e.target.value)}
+                style={styles.filterInput}
+              />
+            </div>
+          </div>
+
+          <div style={styles.filterButtonGroup}>
+            <button style={styles.applyBtn} onClick={() => setShowAdvanced(false)}>
+              Применить
+            </button>
+            <button style={styles.resetBtn} onClick={resetFilters}>
+              Сбросить фильтры
+            </button>
+          </div>
+        </div>
+      )}
+
+      {filteredFiles.length === 0 ? (
+        <div style={styles.noFiles}>
+          {files.length === 0 ? 'Файлы не найдены' : 'По вашему запросу файлы не найдены'}
+        </div>
       ) : (
         <div style={styles.filesList}>
-          {files.map((file) => (
+          {filteredFiles.map((file) => (
             <div key={file.id} style={styles.fileItem}>
               
               <div style={styles.fileTitle}>{file.title}</div>
@@ -193,11 +428,6 @@ function MainPage() {
                     >
                       <span style={styles.downloadIcon}>↓</span>
                        {item.context} ({item.format})
-                      {downloadCounts[item.id] > 0 && (
-                        <span style={styles.downloadCount}>
-                          (загружено {downloadCounts[item.id]} {downloadCounts[item.id] === 1 ? 'раз' : downloadCounts[item.id] < 5 ? 'раза' : 'раз'})
-                        </span>
-                      )}
                     </a>
                   ))}
                 </div>

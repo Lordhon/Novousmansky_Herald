@@ -1,6 +1,6 @@
 
 from rest_framework import serializers
-from file.models import FileModel , FileItem
+from file.models import FileModel , FileItem , Category
 class FileItemSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -15,4 +15,9 @@ class FileSerializer(serializers.ModelSerializer):
     class Meta:
         model = FileModel
         fields = ['id'  ,'title' , 'category' , 'uploaded_at' , 'files' ]
+
+class CateforySerializator(serializers.ModelSerializer):
+    class Meta:
+        model=  Category
+        fields = ['name',]
         

@@ -16,8 +16,9 @@ function Layout({ children }) {
             <Link to="/" className={location.pathname === '/' ? 'nav-link active' : 'nav-link'}>Главная</Link>
             <Link to="/documents" className={location.pathname === '/documents' ? 'nav-link active' : 'nav-link'}>Документы</Link>
             <Link to="/about" className={location.pathname === '/about' ? 'nav-link active' : 'nav-link'}>Полезная информация</Link>
+            <Link to="/сontacts" className={location.pathname === '/сontacts' ? 'nav-link active' : 'nav-link'}>Контакты</Link>
             
-            <a href="#" className="nav-link">Контакты</a>
+            
           </nav>
         </div>
       </header>
