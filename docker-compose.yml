@@ -16,7 +16,7 @@ services:
 
 
   backend:
-    container_name: backend
+    container_name: backend_nv36
     restart: unless-stopped
     build:
       context: ./Backend_website/config
@@ -42,7 +42,7 @@ services:
 
 
   frontend:
-    container_name: frontend
+    container_name: frontend_nv36
     restart: unless-stopped
     build:
       context: ./Frontend_website/frontendfile
@@ -59,7 +59,7 @@ services:
   nginx:
 
     image: nginx:alpine
-    container_name: nginx
+    container_name: nginx_nv36
     restart: unless-stopped
     ports:
       - "80:80"
