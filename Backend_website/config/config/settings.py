@@ -177,6 +177,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://frontend:80",
     "http://zakaz_frontend:80",
     "https://nv36.ru",
+    "http://localhost:8080",
 
 ]
-CSRF_TRUSTED_ORIGINS = ['https://nv36.ru']
+CSRF_TRUSTED_ORIGINS = ['https://nv36.ru' , 'http://localhost:8080']

@@ -7,5 +7,6 @@ class Text(models.Model):
     content = RichTextField(blank=True )  
     updated_at = models.DateTimeField(auto_now=True)
     class Meta:
-        verbose_name = "Тексты для страничек"
+        verbose_name = "Текст для странички"
+        verbose_name_plural = "Тексты для страничек"
 

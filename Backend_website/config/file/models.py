@@ -10,6 +10,7 @@ class Category(models.Model):
         return self.name
     class Meta: 
         verbose_name = "Типы документов"
+        verbose_name_plural = "Типы Документов"
 
 
 
@@ -24,6 +25,8 @@ class FileModel(models.Model):
         return self.title
     class Meta: 
         verbose_name = "Документ"
+        verbose_name_plural = "Документы"
+        
 
 
 
@@ -52,4 +55,5 @@ class FileItem(models.Model):
         return self.file.name
     class Meta:
         verbose_name = "Файл"
+        verbose_name_plural = "Файлы"
         
