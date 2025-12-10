@@ -2,13 +2,26 @@ import { useState, useEffect } from 'react'
 
 function HomePage() {
   const [latestFiles, setLatestFiles] = useState([])
+  const [block, setBlock] = useState(null)
   const [loading, setLoading] = useState(true)
   const [hoveredCard, setHoveredCard] = useState(null)
   const [downloadCounts, setDownloadCounts] = useState({})
 
   useEffect(() => {
+    fetchWelcomeBlock()
     fetchLatestFiles()
   }, [])
+
+  const fetchWelcomeBlock = async () => {
+    try {
+      const response = await fetch('/api/content/home/')
+      if (!response.ok) throw new Error('Ошибка при загрузке текста')
+      const data = await response.json()
+      setBlock(data)
+    } catch (err) {
+      console.error('Ошибка:', err)
+    }
+  }
 
   const fetchLatestFiles = async () => {
     try {
@@ -62,6 +75,16 @@ function HomePage() {
 
   const styles = {
     homePage: { width: '100%' },
+    welcomeBlock: { 
+      background: 'white', 
+      padding: '2rem', 
+      borderRadius: '8px', 
+      boxShadow: '0 2px 4px rgba(0,0,0,0.1)', 
+      marginBottom: '2rem'
+    },
+    welcomeTitle: { color: '#1a2b4d', fontSize: '2rem', fontWeight: 700, margin: '0 0 1rem 0', lineHeight: '1.3' },
+    welcomeContent: { color: '#333', fontSize: '1rem', lineHeight: '1.8', margin: 0 },
+    welcomeContentParagraph: { marginBottom: '1rem' },
     sectionTitle: { color: '#028dbf', fontSize: '1.8rem', fontWeight: 600, marginBottom: '1.5rem' },
     filesList: { display: 'flex', flexDirection: 'column', gap: '1rem' },
     fileItem: { background: 'white', padding: '1.5rem', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)', borderLeft: '4px solid #028dbf' },
@@ -76,6 +99,15 @@ function HomePage() {
 
   return (
     <div style={styles.homePage}>
+      {block && (
+        <div style={styles.welcomeBlock}>
+          {block.title && <h1 style={styles.welcomeTitle}>{block.title}</h1>}
+          {block.content && (
+            <div style={styles.welcomeContent} dangerouslySetInnerHTML={{ __html: block.content }} />
+          )}
+        </div>
+      )}
+
       <h2 style={styles.sectionTitle}>Последние опубликованные документы</h2>
       {loading ? (
         <div style={styles.loading}>Загрузка...</div>

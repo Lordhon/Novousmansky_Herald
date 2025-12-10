@@ -28,12 +28,11 @@ body {
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
 
-
 .header {
   color: white;
   padding: 0;
   width: 100%;
-  background-image: linear-gradient(135deg, rgba(30, 60, 114, 0.7) 0%, rgba(42, 82, 152, 0.7) 50%, rgba(126, 139, 163, 0.7) 100%), url('/back.jpg');
+  background: linear-gradient(135deg, rgba(30, 60, 114, 0.85) 0%, rgba(42, 82, 152, 0.85) 50%, rgba(126, 139, 163, 0.85) 100%), url('/back.jpg');
   background-attachment: scroll;
   background-position: center;
   background-size: cover;
@@ -46,7 +45,6 @@ body {
   justify-content: space-between;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
 }
-
 
 .header::before {
   content: '';
@@ -75,17 +73,15 @@ body {
 }
 
 .header-top {
-  padding: 0 2rem 0 2rem;
+  padding: 1.5rem 2rem 1.5rem 2rem;
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-end;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
   position: relative;
   z-index: 2;
   animation: slideInLeft 0.8s ease-out;
-  gap: 0.5rem;
-  flex: 1;
-  margin-bottom: 1rem;
+  gap: 1.5rem;
 }
 
 @keyframes slideInLeft {
@@ -106,14 +102,6 @@ body {
   justify-content: flex-start;
   position: relative;
   z-index: 2;
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
-}
-
-.header-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 2rem;
-  width: 100%;
 }
 
 .logo-section {
@@ -123,12 +111,11 @@ body {
   gap: 0.5rem;
   width: fit-content;
   flex-shrink: 0;
-  margin-right: auto;
 }
 
 .herb {
-  width: 120px;
-  height: 120px;
+  width: 150px;
+  height: 150px;
   object-fit: contain;
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
   transition: transform 0.3s ease;
@@ -157,6 +144,21 @@ body {
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
+.header-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.header-subtitle {
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 0.2rem 0;
+  line-height: 1.5;
+}
+
 .site-title {
   font-family: 'Playfair Display', serif;
   font-size: 2.8rem;
@@ -168,17 +170,7 @@ body {
   display: block;
   height: auto;
   line-height: 1.2;
-}
-
-@keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+  margin-top: 0.5rem;
 }
 
 .nav {
@@ -188,6 +180,8 @@ body {
   margin: 0;
   width: 100%;
   align-items: center;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .nav-link {
@@ -233,7 +227,6 @@ body {
   font-weight: 700;
 }
 
-
 .main-content {
   flex: 1;
   width: 100%;
@@ -247,7 +240,6 @@ body {
   margin: 0 auto;
   width: 100%;
 }
-
 
 .footer {
   background: linear-gradient(90deg, #1e3c72 0%, #2a5298 100%);
@@ -283,7 +275,6 @@ body {
   text-decoration: underline;
 }
 
-
 @media (max-width: 1024px) {
   .layout {
     box-shadow: none;
@@ -294,7 +285,7 @@ body {
   }
 
   .header-top {
-    padding: 2rem 1.5rem 0 1.5rem;
+    padding: 1.5rem 1.5rem 0 1.5rem;
   }
 
   .header-bottom {
@@ -302,7 +293,7 @@ body {
   }
 
   .site-title {
-    font-size: 1.8rem;
+    font-size: 2.2rem;
   }
 
   .nav {
@@ -319,7 +310,6 @@ body {
   }
 }
 
-
 @media (max-width: 768px) {
   .header {
     min-height: 300px;
@@ -328,8 +318,9 @@ body {
 
   .header-top {
     padding: 1.5rem 1.5rem 0 1.5rem;
-    flex-direction: column;
+    flex-direction: row;
     gap: 1rem;
+    align-items: flex-start;
   }
 
   .header-bottom {
@@ -352,9 +343,13 @@ body {
     font-size: 0.7rem;
   }
 
+  .header-subtitle {
+    font-size: 0.8rem;
+  }
+
   .site-title {
-    font-size: 1.4rem;
-    letter-spacing: 0.3px;
+    font-size: 1.6rem;
+    letter-spacing: 0.5px;
   }
 
   .nav {
@@ -372,19 +367,10 @@ body {
     padding: 1rem;
   }
 
-  .header-container {
-    padding: 0 1rem;
-  }
-
-  .footer-container {
-    padding: 0 1rem;
-  }
-
   .footer {
     padding: 1rem 0;
   }
 }
-
 
 @media (max-width: 480px) {
   .header {
@@ -396,18 +382,12 @@ body {
     padding: 1rem 1rem 0 1rem;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: flex-start;
     gap: 0.8rem;
-    flex: 1;
-    margin-bottom: 1rem;
   }
 
   .header-bottom {
     padding: 0.75rem 1rem 1rem 1rem;
-  }
-
-  .header-container {
-    padding: 0 0.75rem;
   }
 
   .logo-section {
@@ -426,8 +406,12 @@ body {
     font-size: 0.5rem;
   }
 
+  .header-subtitle {
+    font-size: 0.7rem;
+  }
+
   .site-title {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     line-height: 1.1;
     height: auto;
     letter-spacing: 0;
@@ -446,15 +430,6 @@ body {
 
   .main-content {
     padding: 0.75rem;
-  }
-
-  .footer-container {
-    padding: 0 0.75rem;
-  }
-
-  .footer-copyright,
-  .footer-developer {
-    font-size: 0.8rem;
   }
 
   .footer {

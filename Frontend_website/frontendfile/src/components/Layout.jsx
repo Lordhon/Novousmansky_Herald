@@ -17,11 +17,21 @@ function Layout({ children }) {
         <div className="header-top">
           <div className="logo-section">
             <img src="/gerb.png" alt="Герб" className="herb" />
-            <h1 className="site-title">Новоусманский вестник</h1>
+          </div>
+          <div className="header-text">
+            <p className="header-subtitle">Официальный архив</p>
+            <p className="header-subtitle">правовой документации</p>
+            <p className="header-subtitle">Новоусманского муниципального района</p>
           </div>
         </div>
 
         <div className="header-bottom">
+          <h1 className="site-title">Новоусманский вестник</h1>
+        </div>
+
+        <div style={{ flex: 1 }} />
+
+        <div className="header-bottom" style={{ borderTop: 'none', paddingTop: 0 }}>
           <nav className="nav">
             {navItems.map(item => (
               <Link 
