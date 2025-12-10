@@ -4,6 +4,13 @@ import './Layout.css'
 function Layout({ children }) {
   const location = useLocation()
 
+  const navItems = [
+    { path: '/', label: 'Главная' },
+    { path: '/documents', label: 'Документы' },
+    { path: '/about', label: 'Полезная информация' },
+    { path: '/contacts', label: 'Контакты' }
+  ]
+
   return (
     <div className="layout">
       <header className="header">
@@ -16,30 +23,15 @@ function Layout({ children }) {
 
         <div className="header-bottom">
           <nav className="nav">
-            <Link 
-              to="/" 
-              className={location.pathname === '/' ? 'nav-link active' : 'nav-link'}
-            >
-              Главная
-            </Link>
-            <Link 
-              to="/documents" 
-              className={location.pathname === '/documents' ? 'nav-link active' : 'nav-link'}
-            >
-              Документы
-            </Link>
-            <Link 
-              to="/about" 
-              className={location.pathname === '/about' ? 'nav-link active' : 'nav-link'}
-            >
-              Полезная информация
-            </Link>
-            <Link 
-              to="/contacts" 
-              className={location.pathname === '/contacts' ? 'nav-link active' : 'nav-link'}
-            >
-              Контакты
-            </Link>
+            {navItems.map(item => (
+              <Link 
+                key={item.path}
+                to={item.path}
+                className={location.pathname === item.path ? 'nav-link active' : 'nav-link'}
+              >
+                {item.label}
+              </Link>
+            ))}
           </nav>
         </div>
       </header>
