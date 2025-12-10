@@ -74,27 +74,96 @@ function HomePage() {
   }
 
   const styles = {
-    homePage: { width: '100%' },
+    homePage: { 
+      width: '100%',
+      maxWidth: '100%'
+    },
     welcomeBlock: { 
       background: 'white', 
-      padding: '2rem', 
+      padding: 'clamp(1.5rem, 5vw, 2.5rem)',
       borderRadius: '8px', 
       boxShadow: '0 2px 4px rgba(0,0,0,0.1)', 
-      marginBottom: '2rem'
+      marginBottom: 'clamp(1.5rem, 5vw, 2rem)'
     },
-    welcomeTitle: { color: '#1a2b4d', fontSize: '2rem', fontWeight: 700, margin: '0 0 1rem 0', lineHeight: '1.3' },
-    welcomeContent: { color: '#333', fontSize: '1rem', lineHeight: '1.8', margin: 0 },
-    welcomeContentParagraph: { marginBottom: '1rem' },
-    sectionTitle: { color: '#028dbf', fontSize: '1.8rem', fontWeight: 600, marginBottom: '1.5rem' },
-    filesList: { display: 'flex', flexDirection: 'column', gap: '1rem' },
-    fileItem: { background: 'white', padding: '1.5rem', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)', borderLeft: '4px solid #028dbf' },
-    fileTitle: { color: '#1a2b4d', fontSize: '1.3rem', fontWeight: 600, margin: '0 0 0.5rem 0', lineHeight: '1.4' },
-    fileMeta: { color: '#666', fontSize: '1em', marginBottom: '0.5rem' },
-    downloadLink: { color: '#028dbf', textDecoration: 'none', fontSize: '0.95rem', display: 'inline-flex', alignItems: 'center', gap: '0.25rem', cursor: 'pointer' },
-    downloadLinkHover: { textDecoration: 'underline' },
-    downloadIcon: { fontSize: '0.85rem', color: '#999' },
-    downloadCount: { color: '#999', marginLeft: '0.25rem' },
-    loading: { textAlign: 'center', padding: '2rem', color: '#666' },
+    welcomeTitle: { 
+      color: '#1a2b4d', 
+      fontSize: 'clamp(1rem, 4vw, 1.5rem)', 
+      fontWeight: 600, 
+      margin: '0 0 1.2rem 0', 
+      lineHeight: '1.3',
+      wordBreak: 'break-word'
+    },
+    welcomeContent: { 
+      color: '#555', 
+      fontSize: 'clamp(0.75rem, 2vw, 0.95rem)', 
+      lineHeight: '1.8', 
+      margin: 0,
+      wordBreak: 'break-word',
+      overflowWrap: 'break-word'
+    },
+    sectionTitle: { 
+      color: '#028dbf', 
+      fontSize: 'clamp(1rem, 4vw, 1.5rem)', 
+      fontWeight: 600, 
+      marginBottom: 'clamp(1rem, 4vw, 1.5rem)',
+      wordBreak: 'break-word'
+    },
+    filesList: { 
+      display: 'flex', 
+      flexDirection: 'column', 
+      gap: 'clamp(0.75rem, 3vw, 1rem)'
+    },
+    fileItem: { 
+      background: 'white', 
+      padding: 'clamp(1rem, 4vw, 1.5rem)', 
+      borderRadius: '8px', 
+      boxShadow: '0 2px 4px rgba(0,0,0,0.1)', 
+      borderLeft: '4px solid #028dbf'
+    },
+    fileTitle: { 
+      color: '#1a2b4d', 
+      fontSize: 'clamp(0.9rem, 3.5vw, 1.1rem)', 
+      fontWeight: 600, 
+      margin: '0 0 0.5rem 0', 
+      lineHeight: '1.4',
+      wordBreak: 'break-word'
+    },
+    fileMeta: { 
+      color: '#666', 
+      fontSize: 'clamp(0.75rem, 2vw, 0.9rem)', 
+      marginBottom: '0.5rem',
+      wordBreak: 'break-word'
+    },
+    downloadLink: { 
+      color: '#028dbf', 
+      textDecoration: 'none', 
+      fontSize: 'clamp(0.75rem, 2vw, 0.85rem)', 
+      display: 'inline-flex', 
+      alignItems: 'center', 
+      gap: '0.25rem', 
+      cursor: 'pointer',
+      flexWrap: 'wrap',
+      wordBreak: 'break-word'
+    },
+    downloadLinkHover: { 
+      textDecoration: 'underline' 
+    },
+    downloadIcon: { 
+      fontSize: '0.85rem', 
+      color: '#999',
+      flexShrink: 0
+    },
+    downloadCount: { 
+      color: '#999', 
+      marginLeft: '0.25rem',
+      fontSize: 'clamp(0.65rem, 1.5vw, 0.8rem)'
+    },
+    loading: { 
+      textAlign: 'center', 
+      padding: 'clamp(1rem, 5vw, 2rem)', 
+      color: '#666',
+      fontSize: 'clamp(0.9rem, 3vw, 1rem)'
+    },
   }
 
   return (
@@ -123,18 +192,28 @@ function HomePage() {
               </div>
 
               {file.files && file.files.length > 0 && (
-                <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '0.5rem' }}>
+                <div style={{ 
+                  display: 'flex', 
+                  gap: 'clamp(0.4rem, 2vw, 0.5rem)', 
+                  flexWrap: 'wrap', 
+                  marginTop: '0.5rem'
+                }}>
                   {file.files.map((item) => (
                     <a
                       key={item.id}
                       href={item.file}
                       onClick={(e) => { e.preventDefault(); downloadFile(item.file, file.title, item.id) }}
-                      style={{ ...styles.downloadLink, ...(hoveredCard === item.id ? styles.downloadLinkHover : {}) }}
+                      style={{ 
+                        ...styles.downloadLink, 
+                        ...(hoveredCard === item.id ? styles.downloadLinkHover : {}) 
+                      }}
                       onMouseEnter={() => setHoveredCard(item.id)}
                       onMouseLeave={() => setHoveredCard(null)}
                     >
                       <span style={styles.downloadIcon}>↓</span>
-                      {item.context} ({item.format})
+                      <span style={{ wordBreak: 'break-word' }}>
+                        {item.context} ({item.format})
+                      </span>
                       {downloadCounts[item.id] > 0 && (
                         <span style={styles.downloadCount}>
                           (загружено {downloadCounts[item.id]} {downloadCounts[item.id] === 1 ? 'раз' : downloadCounts[item.id] < 5 ? 'раза' : 'раз'})
