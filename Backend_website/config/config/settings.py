@@ -8,7 +8,7 @@ from django.utils.deprecation import RemovedInDjango60Warning
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-
+RECAPTCHA_SECRET_KEY = os.getenv("RECAPTCHA_SECRET_KEY")
 PASSWORD_DB = os.getenv("PASSWORD_DB")
 SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = True
@@ -73,9 +73,23 @@ CKEDITOR_CONFIGS = {
         'toolbar': 'full',
         'height': 300,
         'width': '100%',
-        'removeButtons' : 'Save,Scayt,Source,NewPage,Preview,Print,Templates,PasteFromWord,PasteText,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Flash,Iframe,Maximize,ShowBlocks,About'
+        'removeButtons' : 'Save,Scayt,NewPage,Preview,Print,Templates,PasteFromWord,PasteText,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Flash,Iframe,Maximize,ShowBlocks,About'
     },
 }
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.mail.ru'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'site@nv36.ru' 
+EMAIL_USE_SSL = True
+EMAIL_HOST_PASSWORD = 'qytdvr14I6fSqees0XLr'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+
+
+
+
+
 
 
 MIDDLEWARE = [

@@ -3,7 +3,7 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 
-from file.views import  LookFileAPI, LatestFilesAPI , ListCategories 
+from file.views import  LookFileAPI, LatestFilesAPI , ListCategories ,SendBack
 from text.views import ContentBlockList , ContentBlockDetail
 
 urlpatterns = [
@@ -13,6 +13,9 @@ urlpatterns = [
     path("api/content/", ContentBlockList.as_view()),
     path("api/content/<slug:slug>/", ContentBlockDetail.as_view()),
     path("api/list-categories/", ListCategories.as_view()),
+    path("api/SendBack/", SendBack.as_view()),
+
+    
     
     
 
