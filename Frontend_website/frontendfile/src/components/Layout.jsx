@@ -8,7 +8,7 @@ function Layout({ children }) {
     { path: '/', label: 'Главная' },
     { path: '/documents', label: 'Документы' },
     { path: '/about', label: 'Полезная информация' },
-    { path: '/сontacts', label: 'Контакты' }
+    { path: '/contacts', label: 'Контакты' }
   ]
 
   return (
