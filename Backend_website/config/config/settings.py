@@ -70,7 +70,10 @@ CKEDITOR_UPLOAD_PATH = "uploads/"
 CKEDITOR_ALLOW_NONIMAGE_FILES = False
 CKEDITOR_CONFIGS = {
     'default': {
+        'removePlugins': 'exportpdf',
         'toolbar': 'full',
+        'contentsCss': ['/static/ckeditor_custom.css'],
+        'customConfig': '/static/ckeditor_source_fix.js',
         'height': 300,
         'width': '100%',
         'removeButtons' : 'Save,Scayt,NewPage,Preview,Print,Templates,PasteFromWord,PasteText,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Flash,Iframe,Maximize,ShowBlocks,About'
