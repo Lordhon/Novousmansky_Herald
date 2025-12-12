@@ -144,6 +144,7 @@ function MainPage() {
       dateFrom: '',
       dateTo: ''
     })
+    setShowAdvanced(false)
   }
 
   const filteredFiles = filterFiles()
@@ -224,15 +225,6 @@ function MainPage() {
     resetBtn: {
       padding: '0.5rem 1rem',
       backgroundColor: '#dc3545',
-      color: 'white',
-      border: 'none',
-      borderRadius: '4px',
-      cursor: 'pointer',
-      fontSize: '0.85rem'
-    },
-    applyBtn: {
-      padding: '0.5rem 1rem',
-      backgroundColor: '#28a745',
       color: 'white',
       border: 'none',
       borderRadius: '4px',
@@ -377,11 +369,11 @@ function MainPage() {
           </div>
 
           <div style={styles.filterButtonGroup}>
-            <button style={styles.applyBtn} onClick={() => setShowAdvanced(false)}>
-              Применить
-            </button>
             <button style={styles.resetBtn} onClick={resetFilters}>
               Сбросить фильтры
+            </button>
+            <button style={styles.advancedBtn} onClick={() => setShowAdvanced(false)}>
+              Закрыть
             </button>
           </div>
         </div>

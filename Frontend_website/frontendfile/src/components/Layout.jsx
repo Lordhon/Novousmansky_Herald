@@ -11,6 +11,13 @@ function Layout({ children }) {
     { path: '/contacts', label: 'Контакты' }
   ]
 
+  const socialLinks = [
+    { icon: '/vk.png', url: 'https://vk.com/publicadmnu', label: 'ВКонтакте', isImg: true },
+    { icon: '/telegram.png', url: 'https://t.me/admnusman', label: 'Telegram', isImg: true },
+    { icon: '/ok.png', url: 'https://ok.ru/novousman', label: 'Одноклассники', isImg: true },
+    { icon: '/max.png', url: 'https://max.ru/publicadmnu', label: 'Max', isImg: true }
+  ]
+
   return (
     <div className="layout">
       <header className="header">
@@ -54,6 +61,24 @@ function Layout({ children }) {
 
       <footer className="footer">
         <div className="footer-container">
+          <div className="footer-socials">
+            {socialLinks.map((social, idx) => (
+              <a
+                key={idx}
+                href={social.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="footer-social-link"
+                title={social.label}
+              >
+                {social.isImg ? (
+                  <img src={social.icon} alt={social.label} className="footer-social-icon" />
+                ) : (
+                  social.icon
+                )}
+              </a>
+            ))}
+          </div>
           <p className="footer-copyright">
             &copy; 2025 Новоусманский вестник. Все права защищены.
           </p>

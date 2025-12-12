@@ -2,18 +2,18 @@ import React, { useEffect, useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 
 const styles = `
-  .content { font-size: 1.25rem; line-height: 1.9; }
-  .content h1 { font-size: 3rem; font-weight: 700; color: #1f2937; margin: 2rem 0 1.5rem 0; }
-  .content h2 { font-size: 2rem; font-weight: 600; color: #374151; margin: 1.5rem 0 1rem 0; }
-  .content h3 { font-size: 1.75rem; font-weight: 600; color: #4b5563; margin: 1.25rem 0 0.75rem 0; }
-  .content p { color: #4b5563; margin: 1rem 0; line-height: 1.9; font-size: 1.25rem; }
-  .content a { color: #2563eb; text-decoration: none; font-size: 1.25rem; }
+  .content { line-height: 1.8; }
+  .content h1 { font-size: 2.25rem; font-weight: 700; color: #1f2937; margin: 2rem 0 1.5rem 0; }
+  .content h2 { font-size: 1.5rem; font-weight: 600; color: #374151; margin: 1.5rem 0 1rem 0; }
+  .content h3 { font-size: 1.25rem; font-weight: 600; color: #4b5563; margin: 1.25rem 0 0.75rem 0; }
+  .content p { color: #4b5563; margin: 1rem 0; line-height: 1.8; }
+  .content a { color: #2563eb; text-decoration: none; }
   .content a:hover { text-decoration: underline; }
-  .content ul, .content ol { margin: 1rem 0 1rem 2rem; font-size: 1.25rem; }
-  .content li { margin: 0.5rem 0; color: #4b5563; font-size: 1.25rem; }
-  .content strong { font-weight: 600; color: #1f2937; font-size: 1.25rem; }
-  .content table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 1.25rem; }
-  .content table th, .content table td { border: 1px solid #e5e7eb; padding: 0.75rem; text-align: left; font-size: 1.25rem; }
+  .content ul, .content ol { margin: 1rem 0 1rem 2rem; }
+  .content li { margin: 0.5rem 0; color: #4b5563; }
+  .content strong { font-weight: 600; color: #1f2937; }
+  .content table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
+  .content table th, .content table td { border: 1px solid #e5e7eb; padding: 0.75rem; text-align: left; }
   .content table th { background-color: #f3f4f6; font-weight: 600; }
 
   .contact-form-container {
@@ -25,7 +25,7 @@ const styles = `
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   }
   .contact-form-container h2 {
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: 700;
     color: #1f2937;
     margin-bottom: 20px;
@@ -57,7 +57,7 @@ const styles = `
     padding: 14px;
     background-color: #2563eb;
     color: white;
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: bold;
     border: none;
     border-radius: 8px;
@@ -136,7 +136,7 @@ export default function ContactPage() {
 
         <div className="contact-form-container">
           <h2>Свяжитесь с нами</h2>
-          <form onSubmit={handleSubmit} className="contact-form">
+          <div className="contact-form" onSubmit={handleSubmit}>
             <div className="form-row">
               <input type="text" name="name" placeholder="Имя" value={formData.name} onChange={handleChange} />
               <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} />
@@ -150,12 +150,12 @@ export default function ContactPage() {
               onChange={(token) => setCaptchaToken(token)}
             />
 
-            <button type="submit" disabled={isSubmitting}>
+            <button onClick={handleSubmit} disabled={isSubmitting}>
               {isSubmitting ? "Отправка..." : "Отправить"}
             </button>
 
             {message && <p style={{ marginTop: "8px", color: "#374151" }}>{message}</p>}
-          </form>
+          </div>
         </div>
       </div>
     </div>
