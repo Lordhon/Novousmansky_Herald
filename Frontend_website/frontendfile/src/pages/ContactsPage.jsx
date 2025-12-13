@@ -4,74 +4,75 @@ import ReCAPTCHA from "react-google-recaptcha";
 const styles = `
   .content { line-height: 1.8; }
   .content h1 { font-size: 2.25rem; font-weight: 700; color: #1f2937; margin: 2rem 0 1.5rem 0; }
+  .content h2 { font-size: 1.5rem; font-weight: 600; color: #374151; margin: 0.8rem 0 0.3rem 0; }
   .content h3 { font-size: 1.25rem; font-weight: 600; color: #4b5563; margin: 1.25rem 0 0.75rem 0; }
+  .content p { color: #4b5563; margin: 0.3rem 0 1rem 0; line-height: 1.8; }
+  .content a { color: #2563eb; text-decoration: none; }
+  .content a:hover { text-decoration: underline; }
+  .content ul, .content ol { margin: 1rem 0 1rem 2rem; }
+  .content li { margin: 0.5rem 0; color: #4b5563; }
   .content strong { font-weight: 600; color: #1f2937; }
   .content table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
   .content table th, .content table td { border: 1px solid #e5e7eb; padding: 0.75rem; text-align: left; }
   .content table th { background-color: #f3f4f6; font-weight: 600; }
 
-  .contacts-container {
+  .contacts-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 20px;
+    margin: 30px 0;
   }
 
-  .contacts-container h1 {
-    grid-column: 1 / -1;
-    font-size: 2.25rem;
-    font-weight: 700;
-    color: #1f2937;
-    margin: 0 0 20px 0 !important;
-  }
-
-  .contact-item {
+  .contact-card {
     background: white;
     padding: 25px;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    border-left: 5px solid #2563eb;
-    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   }
 
-  .contact-item:hover {
-    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-    transform: translateY(-4px);
-  }
-
-  .contact-item h2 {
-    font-size: 1.15rem;
+  .contact-card h3 {
+    font-size: 1.25rem;
     font-weight: 700;
     color: #1f2937;
-    margin: 0 0 15px 0 !important;
+    margin-bottom: 15px;
   }
 
-  .contact-item p {
-    margin: 0 0 10px 0 !important;
+  .contact-card p {
     color: #4b5563;
-    font-size: 0.95rem;
+    font-size: 1rem;
     line-height: 1.6;
   }
 
-  .contact-item a {
+  .contact-card a {
     color: #2563eb;
     text-decoration: none;
-    font-weight: 500;
   }
 
-  .contact-item a:hover {
+  .contact-card a:hover {
     text-decoration: underline;
   }
 
-  .contact-item ul {
-    margin: 0 !important;
-    padding: 0;
-    list-style: none;
+  .social-links {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 15px;
   }
 
-  .contact-item li {
-    margin: 0.75rem 0 !important;
-    color: #4b5563;
-    font-size: 1rem;
+  .social-links a {
+    display: inline-block;
+    padding: 8px 14px;
+    background: #f3f4f6;
+    border-radius: 6px;
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  .social-links a:hover {
+    background: #2563eb;
+    color: white;
   }
 
   .contact-form-container {
@@ -162,11 +163,11 @@ export default function ContactPage() {
     setMessage("");
     
     if (!captchaToken) {
-      setMessage({ text: "❌ Подтвердите, что вы не робот.", type: "error" });
+      setMessage("❌ Подтвердите, что вы не робот.");
       return;
     }
     if (!formData.email.trim() && !formData.phone.trim()) {
-      setMessage({ text: "❌ Укажите хотя бы Email или Телефон.", type: "error" });
+      setMessage("❌ Укажите хотя бы Email или Телефон.");
       return;
     }
 
@@ -182,14 +183,14 @@ export default function ContactPage() {
       const data = await res.json();
 
       if (res.ok) {
-        setMessage({ text: "✅ Сообщение отправлено!", type: "success" });
+        setMessage("✅ Сообщение отправлено!");
         setFormData({ name: "", email: "", phone: "", sms: "" });
         setCaptchaToken(null);
       } else {
-        setMessage({ text: `❌ Ошибка: ${data.error}`, type: "error" });
+        setMessage(`❌ Ошибка: ${data.error}`);
       }
     } catch (err) {
-      setMessage({ text: `❌ Ошибка: ${err.message}`, type: "error" });
+      setMessage(`❌ Ошибка: ${err.message}`);
     } finally {
       setIsSubmitting(false);
     }
@@ -200,8 +201,8 @@ export default function ContactPage() {
   return (
     <div className="min-h-screen bg-gray-50 p-8">
       <style>{styles}</style>
-      <div className="max-w-6xl mx-auto bg-white rounded-lg p-8 shadow-sm">
-        <div dangerouslySetInnerHTML={{ __html: block.content }} />
+      <div className="max-w-6xl mx-auto bg-white rounded-lg p-8 shadow-sm space-y-8">
+        <div className="content" dangerouslySetInnerHTML={{ __html: block.content }} />
 
         <div className="contact-form-container">
           <h2>Свяжитесь с нами</h2>
@@ -225,7 +226,7 @@ export default function ContactPage() {
               {isSubmitting ? "Отправка..." : "Отправить"}
             </button>
 
-            {message && <p className={`message ${message.type}`}>{message.text}</p>}
+            {message && <p style={{ marginTop: "8px", color: "#374151" }}>{message}</p>}
           </div>
         </div>
       </div>
