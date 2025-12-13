@@ -4,17 +4,75 @@ import ReCAPTCHA from "react-google-recaptcha";
 const styles = `
   .content { line-height: 1.8; }
   .content h1 { font-size: 2.25rem; font-weight: 700; color: #1f2937; margin: 2rem 0 1.5rem 0; }
-  .content h2 { font-size: 1.5rem; font-weight: 600; color: #374151; margin: 1.5rem 0 1rem 0; }
   .content h3 { font-size: 1.25rem; font-weight: 600; color: #4b5563; margin: 1.25rem 0 0.75rem 0; }
-  .content p { color: #4b5563; margin: 1rem 0; line-height: 1.8; }
-  .content a { color: #2563eb; text-decoration: none; }
-  .content a:hover { text-decoration: underline; }
-  .content ul, .content ol { margin: 1rem 0 1rem 2rem; }
-  .content li { margin: 0.5rem 0; color: #4b5563; }
   .content strong { font-weight: 600; color: #1f2937; }
   .content table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
   .content table th, .content table td { border: 1px solid #e5e7eb; padding: 0.75rem; text-align: left; }
   .content table th { background-color: #f3f4f6; font-weight: 600; }
+
+  .contacts-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+
+  .contacts-container h1 {
+    grid-column: 1 / -1;
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin: 0 0 20px 0 !important;
+  }
+
+  .contact-item {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    border-left: 5px solid #2563eb;
+    transition: all 0.3s ease;
+  }
+
+  .contact-item:hover {
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    transform: translateY(-4px);
+  }
+
+  .contact-item h2 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin: 0 0 15px 0 !important;
+  }
+
+  .contact-item p {
+    margin: 0 0 10px 0 !important;
+    color: #4b5563;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .contact-item a {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .contact-item a:hover {
+    text-decoration: underline;
+  }
+
+  .contact-item ul {
+    margin: 0 !important;
+    padding: 0;
+    list-style: none;
+  }
+
+  .contact-item li {
+    margin: 0.75rem 0 !important;
+    color: #4b5563;
+    font-size: 1rem;
+  }
 
   .contact-form-container {
     max-width: 700px;
@@ -65,8 +123,19 @@ const styles = `
     transition: background 0.3s;
   }
   .contact-form button:hover { background-color: #1e40af; }
+  .contact-form button:disabled { background-color: #9ca3af; cursor: not-allowed; }
+  .message { margin-top: 8px; padding: 10px; border-radius: 6px; text-align: center; font-weight: 500; }
+  .message.success { color: #059669; background-color: #ecfdf5; }
+  .message.error { color: #dc2626; background-color: #fef2f2; }
+
+  .recaptcha-wrapper {
+    display: flex;
+    justify-content: center;
+  }
+
   @media (max-width: 600px) {
     .contact-form .form-row { flex-direction: column; }
+    .contacts-grid { grid-template-columns: 1fr; }
   }
 `;
 
@@ -93,11 +162,11 @@ export default function ContactPage() {
     setMessage("");
     
     if (!captchaToken) {
-      setMessage("❌ Подтвердите, что вы не робот.");
+      setMessage({ text: "❌ Подтвердите, что вы не робот.", type: "error" });
       return;
     }
     if (!formData.email.trim() && !formData.phone.trim()) {
-      setMessage("❌ Укажите хотя бы Email или Телефон.");
+      setMessage({ text: "❌ Укажите хотя бы Email или Телефон.", type: "error" });
       return;
     }
 
@@ -113,14 +182,14 @@ export default function ContactPage() {
       const data = await res.json();
 
       if (res.ok) {
-        setMessage("✅ Сообщение отправлено!");
+        setMessage({ text: "✅ Сообщение отправлено!", type: "success" });
         setFormData({ name: "", email: "", phone: "", sms: "" });
         setCaptchaToken(null);
       } else {
-        setMessage(`❌ Ошибка: ${data.error}`);
+        setMessage({ text: `❌ Ошибка: ${data.error}`, type: "error" });
       }
     } catch (err) {
-      setMessage(`❌ Ошибка: ${err.message}`);
+      setMessage({ text: `❌ Ошибка: ${err.message}`, type: "error" });
     } finally {
       setIsSubmitting(false);
     }
@@ -131,12 +200,12 @@ export default function ContactPage() {
   return (
     <div className="min-h-screen bg-gray-50 p-8">
       <style>{styles}</style>
-      <div className="max-w-6xl mx-auto bg-white rounded-lg p-8 shadow-sm space-y-8">
-        <div className="content" dangerouslySetInnerHTML={{ __html: block.content }} />
+      <div className="max-w-6xl mx-auto bg-white rounded-lg p-8 shadow-sm">
+        <div dangerouslySetInnerHTML={{ __html: block.content }} />
 
         <div className="contact-form-container">
           <h2>Свяжитесь с нами</h2>
-          <div className="contact-form" onSubmit={handleSubmit}>
+          <div className="contact-form">
             <div className="form-row">
               <input type="text" name="name" placeholder="Имя" value={formData.name} onChange={handleChange} />
               <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} />
@@ -145,16 +214,18 @@ export default function ContactPage() {
 
             <textarea name="sms" placeholder="Сообщение" value={formData.sms} onChange={handleChange} />
 
-            <ReCAPTCHA
-              sitekey="6LeXht0rAAAAAKBxY-SSKfnVqv-nH5m5OESd6HuF"
-              onChange={(token) => setCaptchaToken(token)}
-            />
+            <div className="recaptcha-wrapper">
+              <ReCAPTCHA
+                sitekey="6LeXht0rAAAAAKBxY-SSKfnVqv-nH5m5OESd6HuF"
+                onChange={(token) => setCaptchaToken(token)}
+              />
+            </div>
 
             <button onClick={handleSubmit} disabled={isSubmitting}>
               {isSubmitting ? "Отправка..." : "Отправить"}
             </button>
 
-            {message && <p style={{ marginTop: "8px", color: "#374151" }}>{message}</p>}
+            {message && <p className={`message ${message.type}`}>{message.text}</p>}
           </div>
         </div>
       </div>
