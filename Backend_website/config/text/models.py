@@ -5,7 +5,7 @@ from ckeditor.fields import RichTextField
 class Text(models.Model):
     slug = models.CharField(max_length=100, unique=True , verbose_name='Ссылка на которой менять . Пример about')
     content = RichTextField(blank=True )  
-    updated_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now=True , verbose_name='Последнее обновление' )
     
     class Meta:
         verbose_name = "Страницa"

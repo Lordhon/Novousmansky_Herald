@@ -2,8 +2,8 @@ from django.contrib import admin
 from .models import Category, FileModel, FileItem
 
 
-admin.site.site_header = "Моя админка"
-admin.site.site_title = "Моя админка"
+admin.site.site_header = "Панель администратора"
+admin.site.site_title = "Панель администратора"
 admin.site.index_title = "Добро пожаловать в админ-панель"
 
 class FileItemInline(admin.TabularInline):

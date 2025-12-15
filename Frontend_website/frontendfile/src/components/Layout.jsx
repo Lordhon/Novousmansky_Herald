@@ -26,8 +26,8 @@ function Layout({ children }) {
             <img src="/gerb.png" alt="Герб" className="herb" />
           </div>
           <div className="header-text">
-            <p className="header-subtitle">Официальный архив</p>
-            <p className="header-subtitle">правовой документации</p>
+            <p className="header-subtitle">Официальный интернет-портал</p>
+            <p className="header-subtitle">правовой информации</p>
             <p className="header-subtitle">Новоусманского муниципального района</p>
           </div>
         </div>
