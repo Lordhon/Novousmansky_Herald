@@ -1,0 +1,37 @@
+# Исключаем папку media - файлы должны сохраняться только на хосте через volume mapping
+media/
+media_local/
+
+# Исключаем кэш Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Исключаем виртуальное окружение
+venv/
+env/
+ENV/
+
+# Исключаем статические файлы (они собираются отдельно)
+staticfiles/
+static/
+
+# Исключаем базу данных
+*.db
+*.sqlite3
+
+# Исключаем логи
+*.log
+
+# Исключаем IDE файлы
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Исключаем git
+.git/
+.gitignore
+

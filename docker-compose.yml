@@ -35,7 +35,7 @@ services:
       POSTGRES_PASSWORD: ${PASSWORD_DB}
       POSTGRES_DB: Novousmansky_vestnik
     volumes:
-      - ./Backend_website/media:/app/media
+      - ./Backend_website/media:/app/media_local:rw
       - static_volume:/app/staticfiles
     depends_on:
       - db

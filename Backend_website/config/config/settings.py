@@ -43,7 +43,16 @@ LOGGING = {
     },
 }
 MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
+# Определяем MEDIA_ROOT в зависимости от окружения
+# ВСЕГДА используем одну и ту же папку Backend_website/media/ чтобы избежать дублирования файлов
+if os.path.exists('/app/media_local'):
+    # Запущено в Docker - используем смонтированную локальную папку
+    # /app/media_local монтируется из ./Backend_website/media на хосте
+    MEDIA_ROOT = Path('/app/media_local')
+else:
+    # Запущено локально - используем ту же папку Backend_website/media/
+    # BASE_DIR = Backend_website/config/, поэтому выходим на уровень выше
+    MEDIA_ROOT = BASE_DIR.parent / "media"
 
 INSTALLED_APPS = [
     'django.contrib.admin',
