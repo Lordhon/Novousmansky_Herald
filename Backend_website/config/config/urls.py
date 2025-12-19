@@ -19,7 +19,7 @@ urlpatterns = [
     path("api/content/", ContentBlockList.as_view()),
     path("api/content/<slug:slug>/", ContentBlockDetail.as_view()),
     path("api/list-categories/", ListCategories.as_view()),
-    path("api/SendBack/", SendBack.as_view()),
+  #  path("api/SendBack/", SendBack.as_view()),
 ]
 
 

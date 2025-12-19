@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import ReCAPTCHA from "react-google-recaptcha";
+// import ReCAPTCHA from "react-google-recaptcha";
 
 const styles = `
   .content { line-height: 1.8; }
@@ -75,7 +75,7 @@ const styles = `
     color: white;
   }
 
-  .contact-form-container {
+  /* .contact-form-container {
     max-width: 700px;
     margin: 40px auto 0 auto;
     padding: 30px;
@@ -132,20 +132,20 @@ const styles = `
   .recaptcha-wrapper {
     display: flex;
     justify-content: center;
-  }
+  } */
 
   @media (max-width: 600px) {
-    .contact-form .form-row { flex-direction: column; }
+    /* .contact-form .form-row { flex-direction: column; } */
     .contacts-grid { grid-template-columns: 1fr; }
   }
 `;
 
 export default function ContactPage() {
   const [block, setBlock] = useState(null);
-  const [formData, setFormData] = useState({ name: "", email: "", phone: "", sms: "" });
-  const [message, setMessage] = useState("");
-  const [captchaToken, setCaptchaToken] = useState(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  // const [formData, setFormData] = useState({ name: "", email: "", phone: "", sms: "" });
+  // const [message, setMessage] = useState("");
+  // const [captchaToken, setCaptchaToken] = useState(null);
+  // const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     fetch("/api/content/contakts/")
@@ -154,47 +154,47 @@ export default function ContactPage() {
       .catch(err => console.error(err));
   }, []);
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  // const handleChange = (e) => {
+  //   setFormData({ ...formData, [e.target.name]: e.target.value });
+  // };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setMessage("");
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setMessage("");
     
-    if (!captchaToken) {
-      setMessage("❌ Подтвердите, что вы не робот.");
-      return;
-    }
-    if (!formData.email.trim() && !formData.phone.trim()) {
-      setMessage("❌ Укажите хотя бы Email или Телефон.");
-      return;
-    }
+  //   if (!captchaToken) {
+  //     setMessage("❌ Подтвердите, что вы не робот.");
+  //     return;
+  //   }
+  //   if (!formData.email.trim() && !formData.phone.trim()) {
+  //     setMessage("❌ Укажите хотя бы Email или Телефон.");
+  //     return;
+  //   }
 
-    setIsSubmitting(true);
+  //   setIsSubmitting(true);
 
-    try {
-      const res = await fetch("/api/SendBack/", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...formData, captcha: captchaToken }),
-      });
+  //   try {
+  //     const res = await fetch("/api/SendBack/", {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({ ...formData, captcha: captchaToken }),
+  //     });
 
-      const data = await res.json();
+  //     const data = await res.json();
 
-      if (res.ok) {
-        setMessage("✅ Сообщение отправлено!");
-        setFormData({ name: "", email: "", phone: "", sms: "" });
-        setCaptchaToken(null);
-      } else {
-        setMessage(`❌ Ошибка: ${data.error}`);
-      }
-    } catch (err) {
-      setMessage(`❌ Ошибка: ${err.message}`);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+  //     if (res.ok) {
+  //       setMessage("✅ Сообщение отправлено!");
+  //       setFormData({ name: "", email: "", phone: "", sms: "" });
+  //       setCaptchaToken(null);
+  //     } else {
+  //       setMessage(`❌ Ошибка: ${data.error}`);
+  //     }
+  //   } catch (err) {
+  //     setMessage(`❌ Ошибка: ${err.message}`);
+  //   } finally {
+  //     setIsSubmitting(false);
+  //   }
+  // };
 
   if (!block) return <div className="p-8 text-center">Loading...</div>;
 
@@ -204,7 +204,7 @@ export default function ContactPage() {
       <div className="max-w-6xl mx-auto bg-white rounded-lg p-8 shadow-sm space-y-8">
         <div className="content" dangerouslySetInnerHTML={{ __html: block.content }} />
 
-        <div className="contact-form-container">
+        {/* <div className="contact-form-container">
           <h2>Свяжитесь с нами</h2>
           <div className="contact-form">
             <div className="form-row">
@@ -228,7 +228,7 @@ export default function ContactPage() {
 
             {message && <p style={{ marginTop: "8px", color: "#374151" }}>{message}</p>}
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );
