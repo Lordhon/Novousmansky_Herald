@@ -5,8 +5,8 @@ services:
     image: postgres:17
     restart: unless-stopped
     container_name: db_nv36
-    ports:
-     - "5433:5432"
+#    ports:
+#     - "5433:5432"
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${PASSWORD_DB}
