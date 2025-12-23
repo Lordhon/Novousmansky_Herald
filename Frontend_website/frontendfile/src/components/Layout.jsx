@@ -1,8 +1,11 @@
+import { useState, useEffect, useRef } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import './Layout.css'
 
 function Layout({ children }) {
   const location = useLocation()
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const dropdownRef = useRef(null)
 
   const navItems = [
     { path: '/', label: 'Главная' },
@@ -26,6 +29,28 @@ function Layout({ children }) {
     { icon: '/ok.png', url: 'https://ok.ru/novousman', label: 'Одноклассники', isImg: true },
     { icon: '/max.png', url: 'https://max.ru/publicadmnu', label: 'Max', isImg: true }
   ]
+
+  // Закрываем меню при клике вне его
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false)
+      }
+    }
+
+    if (isDropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside)
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [isDropdownOpen])
+
+  // Закрываем меню при изменении маршрута
+  useEffect(() => {
+    setIsDropdownOpen(false)
+  }, [location.pathname])
 
   return (
     <div className="layout">
@@ -58,15 +83,19 @@ function Layout({ children }) {
                 return (
                   <div
                     key={item.path}
+                    ref={dropdownRef}
                     className={`nav-item has-dropdown ${isActive ? 'active' : ''}`}
+                    onMouseEnter={() => setIsDropdownOpen(true)}
+                    onMouseLeave={() => setIsDropdownOpen(false)}
                   >
                     <button
                       type="button"
                       className={`nav-link nav-link-button ${isActive ? 'active' : ''}`}
+                      onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                     >
                       {item.label}
                     </button>
-                    <div className="nav-dropdown">
+                    <div className={`nav-dropdown ${isDropdownOpen ? 'open' : ''}`}>
                       {item.subItems.map(sub => (
                         <Link
                           key={sub.path}
@@ -76,6 +105,7 @@ function Layout({ children }) {
                               ? 'nav-dropdown-link active'
                               : 'nav-dropdown-link'
                           }
+                          onClick={() => setIsDropdownOpen(false)}
                         >
                           {sub.label}
                         </Link>
