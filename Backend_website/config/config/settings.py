@@ -10,7 +10,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 RECAPTCHA_SECRET_KEY = os.getenv("RECAPTCHA_SECRET_KEY")
 PASSWORD_DB = os.getenv("PASSWORD_DB")
-SECRET_KEY = 'asdasda2312asd'
+SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'backend', 'zakaz_backend', '0.0.0.0' , '192.168.61.210' , 'nv36.ru']
