@@ -5,7 +5,14 @@ from datetime import datetime
 
 
 class Category(models.Model):
+    TYPE_CHOICES = (
+        ('Совет народных депутатов' , 'Совет народных депутатов'),
+        ('Администрация Новоусманского муниципального района' , 'Администрация Новоусманского муниципального района'),
+        ('Контрольно-счетная палата Новоусманского муниципального района' , 'Контрольно-счетная палата Новоусманского муниципального района'),
+        ('Иные документы' , 'Иные документы')
+    ) 
     name = models.CharField(max_length=255 ,  verbose_name="Название")
+    description = models.TextField(choices=TYPE_CHOICES, verbose_name="Тип")
     def __str__(self):
         return self.name
     class Meta: 
@@ -42,8 +49,8 @@ def upload_to(instance, filename):
 
 class FileItem(models.Model):
     parent = models.ForeignKey(FileModel,on_delete=models.CASCADE,  related_name='files' , verbose_name="Документ")    
-    file = models.FileField(upload_to=upload_to , verbose_name="Файл")
-    context = models.CharField(verbose_name="Описание")
+    file = models.FileField(max_length=1000 ,upload_to=upload_to , verbose_name="Файл")
+    context = models.CharField(max_length=500 ,verbose_name="Описание")
     uploaded_at = models.DateTimeField(auto_now_add=True , verbose_name="Дата загрузки")
     format = models.CharField(max_length=20, blank=True , verbose_name="Формат")
     def save(self, *args, **kwargs):

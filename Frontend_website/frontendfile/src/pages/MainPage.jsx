@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-function MainPage() {
+function MainPage({ type }) {
   const [files, setFiles] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -18,12 +18,14 @@ function MainPage() {
   useEffect(() => {
     fetchFiles()
     fetchCategories()
-  }, [])
+  }, [type])
 
   const fetchFiles = async () => {
     try {
       setLoading(true)
-      const response = await fetch('/api/look-file/')
+
+      const params = type ? `?type=${encodeURIComponent(type)}` : ''
+      const response = await fetch(`/api/look-file/${params}`)
       
       if (!response.ok) {
         throw new Error('Ошибка при загрузке файлов')
@@ -42,7 +44,8 @@ function MainPage() {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch('/api/list-categories/')
+      const params = type ? `?type=${encodeURIComponent(type)}` : ''
+      const response = await fetch(`/api/list-categories/${params}`)
       if (response.ok) {
         const data = await response.json()
         let catArray = []
@@ -69,7 +72,7 @@ function MainPage() {
     })
   }
 
-  const downloadFile = async (fileUrl, title, fileId) => {
+  const downloadFile = async (fileUrl, title, fileId, fileContext, fileFormat) => {
     try {
       const url = fileUrl.startsWith('http')
         ? fileUrl
@@ -87,8 +90,29 @@ function MainPage() {
       const link = document.createElement('a')
       link.href = downloadUrl
       
-      const fileExt = fileUrl.split('.').pop()
-      const fileName = title.includes('.') ? title : `${title}.${fileExt}`
+      // Извлекаем расширение из URL или используем fileFormat
+      let fileExt = fileFormat || fileUrl.split('.').pop()?.toLowerCase() || 'pdf'
+      
+      // Извлекаем имя файла из URL (последняя часть пути)
+      const urlParts = fileUrl.split('/')
+      const originalFileName = urlParts[urlParts.length - 1]
+      
+      // Определяем имя файла для скачивания
+      let fileName
+      if (fileContext && fileContext.trim()) {
+        // Используем context как основу имени, обрезаем до 100 символов
+        const baseName = fileContext.trim().substring(0, 100)
+        fileName = baseName.endsWith(`.${fileExt}`) ? baseName : `${baseName}.${fileExt}`
+      } else if (originalFileName && originalFileName.includes('.')) {
+        // Используем оригинальное имя файла из URL
+        fileName = originalFileName
+      } else {
+        // Используем title, обрезаем до 100 символов и добавляем расширение
+        const baseName = title.trim().substring(0, 100)
+        // Убираем точку в конце, если есть, чтобы не было конфликта с расширением
+        const cleanName = baseName.replace(/\.$/, '')
+        fileName = `${cleanName}.${fileExt}`
+      }
       
       link.download = fileName
       document.body.appendChild(link)
@@ -148,6 +172,15 @@ function MainPage() {
   }
 
   const filteredFiles = filterFiles()
+
+  const typeTitles = {
+    council: 'Совет народных депутатов',
+    administration: 'Администрация Новоусманского муниципального района',
+    control: 'Контрольно-счётная палата Новоусманского муниципального района',
+    other: 'Иные документы',
+  }
+
+  const pageTitle = type ? `Документы: ${typeTitles[type] || ''}` : 'Список файлов'
 
   const styles = {
     mainPage: { width: '100%' },
@@ -301,7 +334,7 @@ function MainPage() {
   return (
     <div style={styles.mainPage}>
       <div style={styles.header}>
-        <h1 style={styles.title}>Список файлов</h1>
+        <h1 style={styles.title}>{pageTitle}</h1>
       </div>
 
       {!showAdvanced && (
@@ -409,7 +442,7 @@ function MainPage() {
                       href={item.file}
                       onClick={(e) => {
                         e.preventDefault()
-                        downloadFile(item.file, file.title, item.id)
+                        downloadFile(item.file, file.title, item.id, item.context, item.format)
                       }}
                       style={{
                         ...styles.downloadLink,

@@ -46,7 +46,7 @@ function HomePage() {
     })
   }
 
-  const downloadFile = async (fileUrl, title, fileId) => {
+  const downloadFile = async (fileUrl, title, fileId, fileContext, fileFormat) => {
     try {
       const url = fileUrl.startsWith('http') ? fileUrl : `${window.location.origin}${fileUrl}`
       const response = await fetch(url, { method: 'GET', headers: { 'Accept': 'application/octet-stream' } })
@@ -55,8 +55,31 @@ function HomePage() {
       const downloadUrl = window.URL.createObjectURL(blob)
       const link = document.createElement('a')
       link.href = downloadUrl
-      const fileExtension = fileUrl.split('.').pop()
-      const fileName = title.includes('.') ? title : `${title}.${fileExtension}`
+      
+      // Извлекаем расширение из URL или используем fileFormat
+      let fileExt = fileFormat || fileUrl.split('.').pop()?.toLowerCase() || 'pdf'
+      
+      // Извлекаем имя файла из URL (последняя часть пути)
+      const urlParts = fileUrl.split('/')
+      const originalFileName = urlParts[urlParts.length - 1]
+      
+      // Определяем имя файла для скачивания
+      let fileName
+      if (fileContext && fileContext.trim()) {
+        // Используем context как основу имени, обрезаем до 100 символов
+        const baseName = fileContext.trim().substring(0, 100)
+        fileName = baseName.endsWith(`.${fileExt}`) ? baseName : `${baseName}.${fileExt}`
+      } else if (originalFileName && originalFileName.includes('.')) {
+        // Используем оригинальное имя файла из URL
+        fileName = originalFileName
+      } else {
+        // Используем title, обрезаем до 100 символов и добавляем расширение
+        const baseName = title.trim().substring(0, 100)
+        // Убираем точку в конце, если есть, чтобы не было конфликта с расширением
+        const cleanName = baseName.replace(/\.$/, '')
+        fileName = `${cleanName}.${fileExt}`
+      }
+      
       link.download = fileName
       document.body.appendChild(link)
       link.click()
@@ -202,7 +225,7 @@ function HomePage() {
                     <a
                       key={item.id}
                       href={item.file}
-                      onClick={(e) => { e.preventDefault(); downloadFile(item.file, file.title, item.id) }}
+                      onClick={(e) => { e.preventDefault(); downloadFile(item.file, file.title, item.id, item.context, item.format) }}
                       style={{ 
                         ...styles.downloadLink, 
                         ...(hoveredCard === item.id ? styles.downloadLinkHover : {}) 

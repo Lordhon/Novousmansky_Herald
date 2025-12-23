@@ -6,7 +6,16 @@ function Layout({ children }) {
 
   const navItems = [
     { path: '/', label: 'Главная' },
-    { path: '/documents', label: 'Документы' },
+    {
+      path: '/documents',
+      label: 'Документы',
+      subItems: [
+        { path: '/documents/council', label: 'Совет народных депутатов' },
+        { path: '/documents/administration', label: 'Администрация Новоусманского муниципального района' },
+        { path: '/documents/control', label: 'Контрольно-счётная палата Новоусманского муниципального района' },
+        { path: '/documents/other', label: 'Иные документы' }
+      ]
+    },
     { path: '/about', label: 'Полезная информация' },
     { path: '/contacts', label: 'Контакты' }
   ]
@@ -40,15 +49,52 @@ function Layout({ children }) {
 
         <div className="header-bottom" style={{ borderTop: 'none', paddingTop: 0 }}>
           <nav className="nav">
-            {navItems.map(item => (
-              <Link 
-                key={item.path}
-                to={item.path}
-                className={location.pathname === item.path ? 'nav-link active' : 'nav-link'}
-              >
-                {item.label}
-              </Link>
-            ))}
+            {navItems.map(item => {
+              const isActive =
+                location.pathname === item.path ||
+                (item.subItems && item.subItems.some(sub => location.pathname.startsWith(sub.path)))
+
+              if (item.subItems) {
+                return (
+                  <div
+                    key={item.path}
+                    className={`nav-item has-dropdown ${isActive ? 'active' : ''}`}
+                  >
+                    <button
+                      type="button"
+                      className={`nav-link nav-link-button ${isActive ? 'active' : ''}`}
+                    >
+                      {item.label}
+                    </button>
+                    <div className="nav-dropdown">
+                      {item.subItems.map(sub => (
+                        <Link
+                          key={sub.path}
+                          to={sub.path}
+                          className={
+                            location.pathname.startsWith(sub.path)
+                              ? 'nav-dropdown-link active'
+                              : 'nav-dropdown-link'
+                          }
+                        >
+                          {sub.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                )
+              }
+
+              return (
+                <Link 
+                  key={item.path}
+                  to={item.path}
+                  className={isActive ? 'nav-link active' : 'nav-link'}
+                >
+                  {item.label}
+                </Link>
+              )
+            })}
           </nav>
         </div>
       </header>

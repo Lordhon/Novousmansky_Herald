@@ -3,7 +3,7 @@ import sys
 from datetime import timedelta
 from pathlib import Path
 import warnings
-from django.utils.deprecation import RemovedInDjango60Warning
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -58,7 +58,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'ckeditor',
-    
     'django.contrib.staticfiles',
     'corsheaders',
     'rest_framework_simplejwt',

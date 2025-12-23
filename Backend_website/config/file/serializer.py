@@ -19,5 +19,5 @@ class FileSerializer(serializers.ModelSerializer):
 class CateforySerializator(serializers.ModelSerializer):
     class Meta:
         model=  Category
-        fields = ['name',]
+        fields = ['name','description']
         

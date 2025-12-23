@@ -12,9 +12,26 @@ import requests
 
 
 class LookFileAPI(APIView):
-    def get(self , request):
-        files = FileModel.objects.all()
-        serializer = FileSerializer(files, many=True)
+
+
+    TYPE_MAP = {
+        "council": "Совет народных депутатов",
+        "administration": "Администрация Новоусманского муниципального района",
+        "control": "Контрольно-счетная палата Новоусманского муниципального района",
+        "other": "Иные документы",
+    }
+
+    def get(self, request):
+        type_slug = request.query_params.get("type")
+
+        files_qs = FileModel.objects.all()
+
+        if type_slug:
+            category_description = self.TYPE_MAP.get(type_slug)
+            if category_description:
+                files_qs = files_qs.filter(category__description=category_description)
+
+        serializer = FileSerializer(files_qs, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -26,10 +43,26 @@ class LatestFilesAPI(APIView):
     
 
 class ListCategories(APIView):
-    def get(self , request):
-        categories = Category.objects.all()
-        serializer = CateforySerializator(categories, many=True)
-        return Response(serializer.data , status=200)
+
+    TYPE_MAP = {
+        "council": "Совет народных депутатов",
+        "administration": "Администрация Новоусманского муниципального района",
+        "control": "Контрольно-счетная палата Новоусманского муниципального района",
+        "other": "Иные документы",
+    }
+    
+    def get(self, request):
+        type_slug = request.query_params.get("type")
+        
+        categories_qs = Category.objects.all()
+        
+        if type_slug:
+            category_description = self.TYPE_MAP.get(type_slug)
+            if category_description:
+                categories_qs = categories_qs.filter(description=category_description)
+        
+        serializer = CateforySerializator(categories_qs, many=True)
+        return Response(serializer.data, status=200)
 
 
 class SendBack(APIView):
